@@ -36,23 +36,59 @@ def getSections(content):
     names = {}
     for line in content:
         temp = []
+
+        # ignore all sections in the appendix!
+        valApp = line.find('\\appendix') #TODO: Make sure no papers ref "appendix"
+        if valApp != -1:
+            return names
+        # ignore all sections in the appendix!
+        valApp = line.find('\\appendices') #TODO: Make sure no papers ref "appendices"
+        if valApp != -1:
+            return names
         
+
+        # TODO: What it is chapters instead of Sections?!?!
+        # Find chapters?
+        val = line.find('\\chapter')
+        if val != -1:
+
+            if line[val+9] == '}':
+                print "\nChapter was ignored because not real section! It is \section}\n"
+            else:
+                flag = 0
+                # extract section names
+                for char in line:
+                    if char == '}':
+                        flag = 0
+                    if flag == 1:
+                        temp.append(char)
+                    if char == '{':
+                        flag = 1
+                    name = ''.join(temp)
+                    
+                # save names of the sections
+                names[name] = ''
+
         # find sections
         val = line.find('\section')
         if val != -1:
-            flag = 0
-            # extract section names
-            for char in line:
-                if char == '}':
-                    flag = 0
-                if flag == 1:
-                    temp.append(char)
-                if char == '{':
-                    flag = 1
-                name = ''.join(temp)
-                
-            # save names of the sections
-            names[name] = ''
+
+            if line[val+8] == '}':
+                print "\nSection was ignored because not real section! It is \section}\n"
+            else:
+                flag = 0
+                # extract section names
+                for char in line:
+                    if char == '}':
+                        flag = 0
+                    if flag == 1:
+                        temp.append(char)
+                    if char == '{':
+                        flag = 1
+                    name = ''.join(temp)
+                    
+                # save names of the sections
+                names[name] = ''
             
     return names
                     
@@ -112,13 +148,13 @@ def fillTitle(names, content):
     flag = 0
     temp = []
     for line in content:
-        val = line.find('title{')
+        val = line.find('\\title{')
         if val != -1:
             flag = 1
             val2 = line.find('}')
-            temp.append(line[(val+6):(val2+1)])
-    names['title'] = ''.join(temp)
-    return names
+            temp.append(line[(val+7):(val2)])
+            names['title'] = ''.join(temp)
+            return names
 
 # --------------------------------------------------------------
 
@@ -150,7 +186,7 @@ def convertNamesToCats(names, cats):
     syn_relWork = ['related work', 'background']
     syn_meth = ['methodology', ] # TODO: Fix this, this should be all others
     syn_disc = ['discussion', 'results', 'experiment', 'implementation'] # TODOL What if dicussion and conclusion!?!?
-    syn_conc = ['conclusion', 'future work', 'limitations']
+    syn_conc = ['conclusion', 'future work', 'limitations', 'remarks']
     syn_ignore = ['acknowledgments']
 
     # loop through names and put into correct cat:
@@ -159,10 +195,14 @@ def convertNamesToCats(names, cats):
         # check title
         if name == 'title':
             cats['title'] = cats['title'].join(names[name])
+            print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name, 'title')
+            print cats['title']
 
         # check abstract
         elif name == 'abstract':
             cats['abstract'] = cats['abstract'].join(names[name])
+            print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name, 'abstract')
+            # print cats['abstract']
 
         # check other sections:
         else:
@@ -206,15 +246,18 @@ def convertNamesToCats(names, cats):
 def checkSyn(syn_dict, found, name_str, cat_str, cats, names):
     
     # check syns
+    added = 0
     for syn in syn_dict:
         name_str_lower = name_str.lower()
         val = name_str_lower.find(syn)
         if val == -1:
             found = found | 0
         else:
-            cats[cat_str] = cats[cat_str].join(names[name_str])   
-            print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name_str, cat_str)
-            found = found | 1
+            if added == 0:
+                cats[cat_str] = cats[cat_str].join(names[name_str])   
+                print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name_str, cat_str)
+                found = found | 1
+                added = 1
             
     return (cats, found)
 
@@ -236,49 +279,49 @@ def printCats(cats):
 
 def main():
 
-	# define stuffs
-	base_path = "/home/janelle/Documents/classes/complexNetworks/paper/texfiles"
-	files = []
+    # define stuffs
+    base_path = "/home/janelle/Documents/classes/complexNetworks/paper/texfiles"
+    files = []
 
-	# test getting all files to parse
-	files = getFiles(base_path, files)
-	# print files
+    # test getting all files to parse
+    files = getFiles(base_path, files)
+    # files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/08092322.tex"]
 
-	# loop through all the files and parse out the stuff!
-	categories = {}
+    # loop through all the files and parse out the stuff!
+    categories = {}
 
-	for tfile in files:
+    for tfile in files:
 
-	    # ----------------
-	    # run stuff on one file:
-	    print tfile
-	    
-	    # get content
-	    content = getContent(tfile)
+        # ----------------
+        # run stuff on one file:
+        print tfile
+        
+        # get content
+        content = getContent(tfile)
 
-	    # get sections
-	    names = getSections(content)
+        # get sections
+        names = getSections(content)
 
-	    # fill names dict with content from sections + abstract + title
-	    names = fillNamesDict(names, content)
+        # fill names dict with content from sections + abstract + title
+        names = fillNamesDict(names, content)
 
-	    # print names with their content
-	    # printNamesDict(names)
+        # print names with their content
+        # printNamesDict(names)
 
-	    # define the categories dict
-	    cats = {'title':'','abstract':'','introduction':'','related work':'','methodology':'','discussion':'','conclusion':''}
+        # define the categories dict
+        cats = {'title':'','abstract':'','introduction':'','related work':'','methodology':'','discussion':'','conclusion':''}
 
-	    # convert from names to cats
-	    cats = convertNamesToCats(names, cats)
+        # convert from names to cats
+        cats = convertNamesToCats(names, cats)
 
-	    # print cats
-	    # printCats(cats)
+        # print cats
+        # printCats(cats)
 
-		# TODO: SAVE OFF CATS OR SOMETHING SO ITS NOT REWRITTEN EVERTTIME?!?!
-	    categories[tfile] = cats
-	
-	# pickle.dunp(categories, open("test.p", "wb"))
-	print 'done!'
+        # TODO: SAVE OFF CATS OR SOMETHING SO ITS NOT REWRITTEN EVERTTIME?!?!
+        categories[tfile] = cats
+    
+    # pickle.dunp(categories, open("test.p", "wb"))
+    print 'done!'
 
 
 # --------------------------------------------------------------
