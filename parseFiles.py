@@ -1,5 +1,6 @@
 # import things!
 import os
+import re
 import cPickle as pickle
 
 
@@ -45,7 +46,9 @@ def getSections(content):
         valApp = line.find('\\appendices') #TODO: Make sure no papers ref "appendices"
         if valApp != -1:
             return names
-        
+        # ignore the bibliograph
+        if re.match(r'[ |\t]*\\begin\{[a-z]*bibliography\}', line) != None:
+            return names
 
         # TODO: What it is chapters instead of Sections?!?!
         # Find chapters?
@@ -55,37 +58,47 @@ def getSections(content):
             if line[val+9] == '}':
                 print "\nChapter was ignored because not real section! It is \section}\n"
             else:
-                flag = 0
-                # extract section names
-                for char in line:
-                    if char == '}':
-                        flag = 0
-                    if flag == 1:
-                        temp.append(char)
-                    if char == '{':
-                        flag = 1
+                # flag = 0
+                # # extract section names
+                # for char in line:
+                #     if char == '}':
+                #         flag = 0
+                #     if flag == 1:
+                #         temp.append(char)
+                #     if char == '{':
+                #         flag = 1
+                temp = re.search(r'\{[\w| ]*\}', line)
+                if temp != None:
+                    # print temp
                     name = ''.join(temp)
-                    
+                else:
+                    name = ''
+
                 # save names of the sections
                 names[name] = ''
 
         # find sections
-        val = line.find('\section')
+        val = line.find('\\section')
         if val != -1:
 
-            if line[val+8] == '}':
+            if line[val+9] == '}':
                 print "\nSection was ignored because not real section! It is \section}\n"
             else:
-                flag = 0
-                # extract section names
-                for char in line:
-                    if char == '}':
-                        flag = 0
-                    if flag == 1:
-                        temp.append(char)
-                    if char == '{':
-                        flag = 1
-                    name = ''.join(temp)
+                # flag = 0
+                # # extract section names
+                # for char in line:
+                #     if char == '}':
+                #         flag = 0
+                #     if flag == 1:
+                #         temp.append(char)
+                #     if char == '{':
+                #         flag = 1
+                temp = re.search(r'\{[\w| ]*\}', line)
+                if temp != None:
+                    # print temp.group(0)
+                    name = ''.join(temp.group(0))
+                else:
+                    name = ''
                     
                 # save names of the sections
                 names[name] = ''
@@ -99,24 +112,75 @@ def fillSections(names, content):
     for name in names:
         flag = 0
         temp = []
+        count = 0
         for line in content:
-            # fill in sections
-            val = line.find(name)
-            if val != -1:
-                flag = 1
-                val2 = line.find('}')
-                temp.append(line[(val2+1):])
+            count += 1
+            # only get lines up until appendix
+            if re.match(r'[ |\t]*\\appendix',line) != None:
+                # return names #### Can't return names here becuase inside for loop!!!! so how to go to next instance of for loop instead?!?!
+                # print 't1'
+                break
+            elif re.match(r'[ |\t]*\\appendices',line) != None:
+                # return names
+                break 
+            # dont include anything after the bibliography
+            elif re.match(r'[ |\t]*\\begin\{[a-z]*bibliography\}', line) != None:
+                break
+
+            else:            
+                # fill in sections
+                val = line.find(name)
+                if val != -1:
+                    # print('ZZZZZZZZZ\n1\nZZZZZZZZZZZZZZZZ')
+                    flag = 1
+                    val2 = line.find('}')
+                    temp.append(line[(val2+1):])
+                    continue
+
+                val3 = line.find('\\section')
+                val4 = line.find('\\chapter')
+                if val3 != -1 or val4 != -1:
+                    flag = 0
+                if flag == 1:
+                    if lineOkay(line):
+                        temp.append(line.lstrip())
+                    # only add lines if not comments
+                    # if line != '':
+                    #     if line[0] != '%':
+                    #         temp.append(line)
                 continue
-            val3 = line.find('\section')
-            if val3 != -1:
-                flag = 0
-            if flag == 1:
-                if line != '':
-                    if line[0] != '%':
-                        temp.append(line)
+            # print 't2'
+            break
+
         names[name] = ''.join(temp)
-        
+
     return names
+
+# --------------------------------------------------------------
+
+
+# Define function to fill in abstract
+def lineOkay(line):
+
+    # need to get rid of: Comments, \being{figure}[.], \end{figure}, \includegraphics, 
+
+    if line != '':
+        # only add lines if not comments
+        if re.match(r'[ |\t]*%', line) == None:
+            # only if not begin figure
+            # if re.match(r'\\begin\{figure\}\[.*\]',test) == None
+            if re.match(r'[ |\t]*\\begin\{figure[\*]*\}',line) == None:
+                # only if not end figure
+                if re.match(r'[ |\t]*\\end\{figure\[\*]*}',line) == None:
+                    # only if not include graphics
+                    if re.match(r'[ |\t]*\\includegraphics',line) == None:
+                        # only if not include graphics
+                        if re.match(r'[ |\t]*\\label',line) == None:
+                            if re.match(r'[ |\t]*\\centering',line) == None:
+                                if re.match(r'[ |\t]*\\subfloat',line) == None:
+                                    return True
+    return False
+
 
 # --------------------------------------------------------------
 
@@ -190,6 +254,8 @@ def convertNamesToCats(names, cats):
     syn_ignore = ['acknowledgments']
 
     # loop through names and put into correct cat:
+    count = 0
+    discCount = 0
     for name in names:
 
         # check title
@@ -217,7 +283,7 @@ def convertNamesToCats(names, cats):
             (cats, found) = checkSyn(syn_relWork, found, name, 'related work', cats, names)
 
             # check discussion 
-            (cats, found) = checkSyn(syn_disc, found, name, 'discussion', cats, names)
+            (cats, found, discCount) = checkSynDisc(syn_disc, found, name, 'discussion', cats, names, discCount)
 
             # check conclusion
             (cats, found) = checkSyn(syn_conc, found, name, 'conclusion', cats, names)
@@ -236,8 +302,12 @@ def convertNamesToCats(names, cats):
                 
                 # if not in ignore list, then add to methodology
                 if ignore == 0:
-                    cats['methodology'] = cats['methodology'].join(names[name])  
-                    print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name, 'methodology')
+                    count += 1
+                    # print cats['methodology']
+                    # cats['methodology'] = cats['methodology'].join(names[name])  
+                    temp_str = 'methodology_{}'.format(count)
+                    cats[temp_str] = ''.join(names[name])
+                    print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name, temp_str)
 
     return cats       
         
@@ -263,6 +333,28 @@ def checkSyn(syn_dict, found, name_str, cat_str, cats, names):
 
 # --------------------------------------------------------------
 
+def checkSynDisc(syn_dict, found, name_str, cat_str, cats, names, discCount):
+    
+    # check syns
+    added = 0
+    for syn in syn_dict:
+        name_str_lower = name_str.lower()
+        val = name_str_lower.find(syn)
+        if val == -1:
+            found = found | 0
+        else:
+            if added == 0:
+                discCount += 1
+                temp_str = 'discussion_{}'.format(discCount)
+                cats[temp_str] = ''.join(names[name_str])   
+                print "\n--------\nSection {} was added to Category {}!\n-------\n".format(name_str, temp_str)
+                found = found | 1
+                added = 1
+            
+    return (cats, found, discCount)
+
+# --------------------------------------------------------------
+
 def printCats(cats):
     for cat in cats:
         print cat
@@ -284,8 +376,10 @@ def main():
     files = []
 
     # test getting all files to parse
-    files = getFiles(base_path, files)
+    # files = getFiles(base_path, files)
     # files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/08092322.tex"]
+    files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/171011304.tex"]
+
 
     # loop through all the files and parse out the stuff!
     categories = {}
@@ -319,8 +413,13 @@ def main():
 
         # TODO: SAVE OFF CATS OR SOMETHING SO ITS NOT REWRITTEN EVERTTIME?!?!
         categories[tfile] = cats
-    
-    # pickle.dunp(categories, open("test.p", "wb"))
+
+        # Now remove the memory for cats and content and names?
+        del cats
+        del content
+        del names
+
+    pickle.dump(categories, open("test.p", "w"))
     print 'done!'
 
 
