@@ -25,12 +25,17 @@ def printCats(categories):
 def cleanData(categories):
 
     # go through each category
+    count = 0
     for key in categories:
+
+        count += 1
+        print key
+        print count
+
         for cat in categories[key]:
 
             # if cat != 'discussion':
 
-                # print categories[key][cat]
 
                 # # manually cleaning
                 categories[key][cat] = cleanMan(cat, categories[key][cat])
@@ -167,13 +172,13 @@ def main():
 
     printCats(categories)
 
-    # detect phrases
-    for key in categories:
-        for cat in categories[key]:
-            print cat
-            phrases = gensim.models.Phrases(categories[key][cat])
-            print(phrases[categories[key][cat]])
-    # TODO: Fix and Save theseeeee
+    # # detect phrases
+    # for key in categories:
+    #     for cat in categories[key]:
+    #         print cat
+    #         phrases = gensim.models.Phrases(categories[key][cat])
+    #         print(phrases[categories[key][cat]])
+    # # TODO: Fix and Save theseeeee
     #       For example. complex_network should be created byt it isnt!!!!
 
     # save the data back out

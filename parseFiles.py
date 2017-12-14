@@ -2,6 +2,7 @@
 import os
 import re
 import cPickle as pickle
+from datetime import datetime
 
 
 # --------------------------------------------------------------
@@ -81,27 +82,29 @@ def getSections(content):
         val = line.find('\\section')
         if val != -1:
 
-            if line[val+9] == '}':
-                print "\nSection was ignored because not real section! It is \section}\n"
-            else:
-                # flag = 0
-                # # extract section names
-                # for char in line:
-                #     if char == '}':
-                #         flag = 0
-                #     if flag == 1:
-                #         temp.append(char)
-                #     if char == '{':
-                #         flag = 1
-                temp = re.search(r'\{[\w| ]*\}', line)
-                if temp != None:
-                    # print temp.group(0)
-                    name = ''.join(temp.group(0))
+            if len(line) > val + 9: 
+
+                if line[val+9] == '}':
+                    print "\nSection was ignored because not real section! It is \section}\n"
                 else:
-                    name = ''
-                    
-                # save names of the sections
-                names[name] = ''
+                    # flag = 0
+                    # # extract section names
+                    # for char in line:
+                    #     if char == '}':
+                    #         flag = 0
+                    #     if flag == 1:
+                    #         temp.append(char)
+                    #     if char == '{':
+                    #         flag = 1
+                    temp = re.search(r'\{[\w| ]*\}', line)
+                    if temp != None:
+                        # print temp.group(0)
+                        name = ''.join(temp.group(0))
+                    else:
+                        name = ''
+                        
+                    # save names of the sections
+                    names[name] = ''
             
     return names
                     
@@ -376,9 +379,9 @@ def main():
     files = []
 
     # test getting all files to parse
-    # files = getFiles(base_path, files)
+    files = getFiles(base_path, files)
     # files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/08092322.tex"]
-    files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/171011304.tex"]
+    # files = ["/home/janelle/Documents/classes/complexNetworks/paper/texfiles/networking/tex/171011304.tex"]
 
 
     # loop through all the files and parse out the stuff!
@@ -428,5 +431,7 @@ def main():
 # --------------------------------------------------------------
 
 if __name__ == "__main__":
+    startTime = datetime.now()
     main()
+    print datetime.now() - startTime   
 
