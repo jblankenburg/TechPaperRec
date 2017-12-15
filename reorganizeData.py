@@ -33,12 +33,16 @@ def reorganizeData(categories):
     counts = {'automata': 0, 'compilers': 0, 'CV': 0, 'graphics': 0, 'ML': 0, 'networking': 0, 'Parallel': 0, 'Robotics': 0, 'Security': 0, 'SoftwareEngineering': 0}
 
     # get keys
+    doc2tag = {}
     indx = -1
     for key in categories:
         # keys = categories[key].keys()
         # print keys
         m = re.search(r'[0-9]+', key)
         indx += 1
+
+        # need to save mapping from docids to indx!
+        doc2tag[indx] = m.group(0)
 
         # /home/janelle/Documents/classes/complexNetworks/paper/texfiles/automata/
         # 62 is offset to name
@@ -80,7 +84,7 @@ def reorganizeData(categories):
                 print 'TEST: topic: {} counts: {}'.format(topic, counts[topic])
 
 
-    return (docs, docsTrain, docsTest)
+    return (docs, docsTrain, docsTest, doc2tag)
 
 # -----------------------------------------
 
@@ -182,9 +186,10 @@ def main():
     categories = pickle.load( open("test_clean.p", "r"))
 
     #  reorganize data:
-    (docs, docsTrain, docsTest) = reorganizeData(categories)
+    (docs, docsTrain, docsTest, doc2tag) = reorganizeData(categories)
 
     # save the data back out
+    pickle.dump(doc2tag, open("test_docToTag.p", "w"))
     pickle.dump(docs, open("test_organize_full.p", "w"))
     pickle.dump(docsTrain, open("test_organize_train.p", "w"))
     pickle.dump(docsTest, open("test_organize_test.p", "w"))

@@ -100,7 +100,7 @@ def trainCatModels(docs):
 
         startTimeVocab = datetime.now()
         print 'starting to save vocab model: {}'.format(startTimeVocab)
-        simple_models[0].save("models/doc2vec_{}_VOCAB.model".format(key))
+        simple_models[0].save("vocab/doc2vec_{}_VOCAB.model".format(key))
         print 'saved vocab model in {}\n'.format(datetime.now() - startTimeVocab)
 
 
