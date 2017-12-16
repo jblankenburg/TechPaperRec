@@ -12,6 +12,7 @@ import cPickle as pickle
 from datetime import datetime
 import random
 import os
+import sys
 
 # os.system("taskset -p 0xff %d" % os.getpid())
 
@@ -201,17 +202,18 @@ def getDocList(cat):
 
 def main():
 
-    # open file - this is 2.6 GB of memory... if it comes down to it then maybe breeak file into different categories and only load in one at a time?!?
-    docsTrain = pickle.load( open("test_organize_train.p", "r"))
+    # NOTE: dataset should be set as "training" or "test"
+    dataset = sys.argv[1]
 
-    # while(1):
-    #     print '.'
+    # open file - this is 2.6 GB of memory... if it comes down to it then maybe breeak file into different categories and only load in one at a time?!?
+    fname = "reorganized_docs_" + dataset + ".p"
+    docs = pickle.load( open(fname, "r"))
 
     # print data
     # printCats(categories)
 
     # train models:
-    models = trainModels(docsTrain)
+    models = trainModels(docs)
 
     # save the data back out
     # pickle.dump(categories, open("test_clean.p", "w"))

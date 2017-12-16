@@ -3,7 +3,7 @@ import os
 import re
 import cPickle as pickle
 from datetime import datetime
-
+import sys
 
 # --------------------------------------------------------------
 #  functions
@@ -375,7 +375,12 @@ def printCats(cats):
 def main():
 
     # define stuffs
-    base_path = "/home/janelle/Documents/classes/complexNetworks/paper/texfiles"
+    # base_path = "/home/janelle/Documents/classes/complexNetworks/paper/texfiles"
+
+    # NOTE: dataset should be set as "training" or "test"
+    dataset = sys.argv[1]
+
+    base_path = "/home/janelle/Documents/classes/complexNetworks/paper/" + dataset +"/texfiles"
     files = []
 
     # test getting all files to parse
@@ -422,7 +427,8 @@ def main():
         del content
         del names
 
-    pickle.dump(categories, open("test.p", "w"))
+    fname = "parsed_" + dataset + ".p"
+    pickle.dump(categories, open(fname, "w"))
     print 'done!'
 
 

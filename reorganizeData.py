@@ -11,13 +11,14 @@ import cPickle as pickle
 from datetime import datetime
 import random
 import os
+import sys
 
 # os.system("taskset -p 0xff %d" % os.getpid())
 
 
 # ------------------------------------------------------
 
-def reorganizeData(categories):
+def reorganizeData(categories, dataset):
 
     allTitles        = [] # Will hold all docs in original order
     allAbstracts     = [] # Will hold all docs in original order
@@ -27,26 +28,34 @@ def reorganizeData(categories):
     allDiscussions   = [] # Will hold all docs in original order
     allConclusions  = [] # Will hold all docs in original order
     docs = {'title': allTitles, 'abstract': allAbstracts, 'introduction': allIntroductions, 'related work': allRelatedWorks,  'methodology': allMethodology, 'discussion': allDiscussions, 'conclusion': allConclusions }
-    docsTest = {'title': allTitles, 'abstract': allAbstracts, 'introduction': allIntroductions, 'related work': allRelatedWorks,  'methodology': allMethodology, 'discussion': allDiscussions, 'conclusion': allConclusions }
-    docsTrain = {'title': allTitles, 'abstract': allAbstracts, 'introduction': allIntroductions, 'related work': allRelatedWorks,  'methodology': allMethodology, 'discussion': allDiscussions, 'conclusion': allConclusions }
+    # docsTest = {'title': allTitles, 'abstract': allAbstracts, 'introduction': allIntroductions, 'related work': allRelatedWorks,  'methodology': allMethodology, 'discussion': allDiscussions, 'conclusion': allConclusions }
+    # docsTrain = {'title': allTitles, 'abstract': allAbstracts, 'introduction': allIntroductions, 'related work': allRelatedWorks,  'methodology': allMethodology, 'discussion': allDiscussions, 'conclusion': allConclusions }
 
     counts = {'automata': 0, 'compilers': 0, 'CV': 0, 'graphics': 0, 'ML': 0, 'networking': 0, 'Parallel': 0, 'Robotics': 0, 'Security': 0, 'SoftwareEngineering': 0}
 
     # get keys
+    cat2tag = {'automata': [], 'compilers': [], 'CV': [], 'graphics': [], 'ML': [], 'networking': [], 'Parallel': [], 'Robotics': [], 'Security': [], 'SoftwareEngineering': []}
     doc2tag = {}
-    indx = -1
+    # doc2tagTest = {}
+
+    # need to offset new samples with their own tags!!!!!
+    if dataset == 'test':
+        indx = -1 + 100
+    else:
+        indx = -1
+
     for key in categories:
         # keys = categories[key].keys()
         # print keys
         m = re.search(r'[0-9]+', key)
         indx += 1
 
-        # need to save mapping from docids to indx!
-        doc2tag[indx] = m.group(0)
-
-        # /home/janelle/Documents/classes/complexNetworks/paper/texfiles/automata/
+        # /home/janelle/Documents/classes/complexNetworks/paper/DATASET/texfiles/automata/
         # 62 is offset to name
-        topic = getTopic(key[63:])
+        offset = 64 + len(dataset)
+        topic = getTopic(key[offset:])
+
+        print topic
         counts[topic] += 1
 
         for cat in categories[key]:
@@ -67,24 +76,31 @@ def reorganizeData(categories):
             doc_str = getDocList(cat)
 
             # TaggedDocument(words, tags)
-            docs[doc_str].append(TaggedDocument(words, tags))
+            # docs[doc_str].append(TaggedDocument(words, tags))
             # NOTE: So this just has each separate methodology and discussion sections
             #       as their own tagged document.... need to instead combine these sections if possible?!?
             #       but won't array length still be an issue!?!??!
             # so.....lets see what happens if its this way first.........
 
             # train
-            if counts[topic] < 10:
-                docsTrain[doc_str].append(TaggedDocument(words, tags))
-                print 'TRAIN: topic: {} counts: {}'.format(topic, counts[topic])
+            # if counts[topic] <= 10:
+            docs[doc_str].append(TaggedDocument(words, tags))
+            print 'topic: {} counts: {}'.format(topic, counts[topic])
+            # need to save mapping from docids to indx!
+            print m.group(0)
+            doc2tag[indx] = m.group(0)
+            cat2tag[topic].append(indx)
 
-            # test
-            else:
-                docsTest[doc_str].append(TaggedDocument(words, tags))
-                print 'TEST: topic: {} counts: {}'.format(topic, counts[topic])
+            # # test
+            # else:
+            #     docsTest[doc_str].append(TaggedDocument(words, tags))
+            #     print 'TEST: topic: {} counts: {}'.format(topic, counts[topic])
+            #     # need to save mapping from docids to indx!
+            #     doc2tagTest[indx] = m.group(0)
 
 
-    return (docs, docsTrain, docsTest, doc2tag)
+    # return (docs, docsTrain, docsTest, doc2tagTrain, doc2tagTest)
+    return (docs, doc2tag, cat2tag)
 
 # -----------------------------------------
 
@@ -182,18 +198,32 @@ def getDocList(cat):
 
 def main():
 
+    # NOTE: dataset should be set as "training" or "test"
+    dataset = sys.argv[1]
+
     # open file
-    categories = pickle.load( open("test_clean.p", "r"))
+    fname = "cleaned_" + dataset + ".p"
+    categories = pickle.load( open(fname, "r"))
 
     #  reorganize data:
-    (docs, docsTrain, docsTest, doc2tag) = reorganizeData(categories)
+    # (docs, docsTrain, docsTest, doc2tagTrain, doc2tagTest) = reorganizeData(categories)
+    (docs, doc2tag, cat2tag) = reorganizeData(categories, dataset)
 
     # save the data back out
-    pickle.dump(doc2tag, open("test_docToTag.p", "w"))
-    pickle.dump(docs, open("test_organize_full.p", "w"))
-    pickle.dump(docsTrain, open("test_organize_train.p", "w"))
-    pickle.dump(docsTest, open("test_organize_test.p", "w"))
+    fname = "reorganized_cat2tag_" + dataset + ".p"
+    pickle.dump(cat2tag, open(fname, "w"))
+    fname = "reorganized_doc2tag_" + dataset + ".p"
+    pickle.dump(doc2tag, open(fname, "w"))
+    # pickle.dump(doc2tagTest, open("test_docToTagTest.p", "w"))
+    # pickle.dump(docs, open("test_organize_full.p", "w"))
+    fname = "reorganized_docs_" + dataset + ".p"
+    pickle.dump(docs, open(fname, "w"))
+    # pickle.dump(docsTest, open("test_organize_test.p", "w"))
 
+
+    print len(doc2tag)
+    # print len(doc2tagTest)
+    
     print 'done!'
 
 

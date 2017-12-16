@@ -4,6 +4,7 @@ import re
 import gensim
 import cPickle as pickle
 from datetime import datetime
+import sys
 
 # --------------------------------------------------------------
 
@@ -162,10 +163,12 @@ def cleanGen(cat, data):
 
 def main():
 
-
-
+    # NOTE: dataset should be set as "training" or "test"
+    dataset = sys.argv[1]
+    
     # open file
-    categories = pickle.load( open("test.p", "r"))
+    fname = "parsed_" + dataset + ".p"
+    categories = pickle.load( open(fname, "r"))
 
     # clean the data
     categories = cleanData(categories)
@@ -182,7 +185,8 @@ def main():
     #       For example. complex_network should be created byt it isnt!!!!
 
     # save the data back out
-    pickle.dump(categories, open("test_clean.p", "w"))
+    fname = "cleaned_"+ dataset + ".p"
+    pickle.dump(categories, open(fname, "w"))
 
 
     print 'done!'
