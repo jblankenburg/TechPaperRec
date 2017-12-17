@@ -2,11 +2,11 @@
 python parseFiles.py train
 python cleanData.py train
 python reorganizeData.py train
-python trainModels.py train
-python generateNetworks.py train
+python trainModels.py train           <----- redo after change models
+python generateNetworks.py train      <----- redo after change models
 
 // now run the scripts to test new inputs
 python parseFiles.py test
 python cleanData.py test
 python reorganizeData.py test
-python recommenderSystem.py test
+python recommenderSystem.py test      <----- redo after change models

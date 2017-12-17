@@ -37,20 +37,24 @@ def buildEdgeLists(docs, doc2tag):
     for i in doc2tag:
         count += 1
 
-    for i in doc2tag:
+    # loop through models
+    edges = {}
+    for modelInd in range(5):
 
-        print 'searching edges in doc {}'.format(i)
+        for i in doc2tag:
 
-        # get most similar papers
-        similarities = mostSimilar(docs, i, count)
+            print 'searching edges in doc {}'.format(i)
 
-        # if similarity above threshold, add edge to network
-        edgeLists = findEdges(edgeLists, similarities, i, count)
+            # get most similar papers
+            similarities = mostSimilar(docs, i, count, modelInd)
 
+            # if similarity above threshold, add edge to network
+            edgeLists = findEdges(edgeLists, similarities, i, count)
+            edges[modelInd] = edgeLists
 
     print 'similarities calced in {}\n'.format(datetime.now() - startTimeSim)
 
-    return edgeLists
+    return edges
 
 
 # ------------------------------------------------------
@@ -64,35 +68,29 @@ def findEdges(edgeLists, similarities, i, count):
         # iterate through the list of similar docs and keep those above threshold
         for docid, sim in similarities[key]:
             if docid in simsAll.keys():
-                simsAll[docid].append((sim,key))
+                simsAll[docid].append(sim)
             else:
-                simsAll[docid] = [(sim,key)]
-            if key == 'title' or key == 'introduction':
-                if docid in simsTA.keys():
-                    simsTA[docid].append((sim,key))
-                else:
-                    simsTA[docid] = [(sim,key)]
+                simsAll[docid] = [sim]
+        if key == 'title' or key == 'introduction':
+            if docid in simsTA.keys():
+                simsTA[docid].append(sim)
+            else:
+                simsTA[docid] = [sim]
 
-    threshold = 0.4
+    threshold = 0.5
 
     # get avg of sims
     for docid in simsAll:
         for item in simsAll[docid]:
             print '\t\t score: {}'.format(item)
-        avg = np.mean([sim for sim,key in simsAll[docid]])
-        print '\t\t {}, {}\tavg = {}'.format(i, docid, avg)
+        avg = np.mean(simsAll[docid])
+        print '\t\t\t {}, {}\tavg = {}'.format(i, docid, avg)
         if avg > threshold:
             edgeLists['allCategories'].append((i,docid,avg))
 
-
-    threshold = 0.65
-
     # get avg of sims
     for docid in simsTA:
-        for item in simsTA[docid]:
-            print '\t\t score: {}'.format(item)
-        avg = np.mean([sim for sim,key in simsTA[docid]])
-        print '\t\t {}, {}\tavg = {}'.format(i, docid, avg)
+        avg = np.mean(simsTA[docid])
         if avg > threshold:
             edgeLists['titleAbstract'].append((i,docid,avg))
 
@@ -100,7 +98,7 @@ def findEdges(edgeLists, similarities, i, count):
 
 # ------------------------------------------------------
 
-def mostSimilar(docs, i, count):
+def mostSimilar(docs, i, count,modelInd):
 
     #  get similarity for each doc for each category
     similarities = {'title': 0, 'abstract': 0, 'introduction': 0, 'related work': 0, 'methodology': 0, 'discussion': 0, 'conclusion': 0}
@@ -109,7 +107,7 @@ def mostSimilar(docs, i, count):
         # load all models for key
         models = getModels(key)
         # for now, just use first model!!!!
-        model = models[0]
+        model = models[modelInd]
 
         # get inferred vector and the most_similar doc?
         inferred = model.infer_vector(docs[key][i].words)
@@ -168,7 +166,7 @@ def reorgCat2Tag(cat2tag):
 # ------------------------------------------------------
 
 
-def generateNetworks(edgeLists, doc2tag, cat2tag):
+def generateNetworks(edgeLists, doc2tag, cat2tag, ind):
 
     # reverse to look up cat by tag
     tag2cat = reorgCat2Tag(cat2tag)
@@ -177,7 +175,7 @@ def generateNetworks(edgeLists, doc2tag, cat2tag):
     for key in edgeLists:
         print key
 
-        file_name = 'gdf/network_{}.gdf'.format(key)
+        file_name = 'gdf/network_{}_{}.gdf'.format(key, ind)
         with open(file_name, 'w') as fin:
 
             #  write the nodes
@@ -212,35 +210,46 @@ def main():
     fname = "reorganized_cat2tag_" + dataset + ".p"
     cat2tag = pickle.load( open(fname, "r"))
 
-    # print data
-    # printCats(categories)
-
     # test models:
-    edgeLists = buildEdgeLists(docs, doc2tag)
+    edges = buildEdgeLists(docs, doc2tag)
+
+    # test the models.....
+    for ind in edges:
+        for network in edges[ind]:
+            countsTo = []
+            countsFrom = []
+            print '{}, {}:\n\tnum edges: {}'.format(ind, network, len(edges[ind][network]))
+            for edge in edges[ind][network]:
+                # print edge
+                countsFrom.append(edge[0])
+                countsTo.append(edge[1])
+            print(collections.Counter(countsTo))
+            print(collections.Counter(countsFrom))
 
 
-    for network in edgeLists:
-        countsTo = []
-        countsFrom = []
-        print '{}, {}:\n\tnum edges: {}'.format(0, network, len(edgeLists[network]))
-        for edge in edgeLists[network]:
-            # print edge
-            countsFrom.append(edge[0])
-            countsTo.append(edge[1])
-        print(collections.Counter(countsTo))
-        print(collections.Counter(countsFrom))
+    for ind in edges:
+        # TODO: So don't have to rerun this, save our edge lists so next time can just read this in so that I can write the next file to generate the gdf files.
+        fname = "edgeLists_" + dataset + str(ind) + ".p"
+        pickle.dump(edges[ind], open(fname, "w"))
+
+    # fname = "edgeLists_" + dataset + '0' + ".p"
+    # edgeLists = pickle.load(open(fname, "r"))
 
 
-    # TODO: So don't have to rerun this, save our edge lists so next time can just read this in so that I can write the next file to generate the gdf files.
-    fname = "edgeLists_" + dataset + ".p"
-    pickle.dump(edgeLists, open(fname, "w"))
-    # edgeLists = pickle.load(open("test_edgeLists.p", "r"))
+    # for item in edgeLists:
+    #     for thing in edgeLists[item]:
+    #         print thing[0]
+    #         print thing[1]
 
-    # print edgeLists
 
-    # save the data back out
-    # pickle.dump(data, open("test_testResults.p", "w"))
-    generateNetworks(edgeLists, doc2tag, cat2tag)
+        # print edgeLists
+
+        # save the data back out
+        # pickle.dump(data, open("test_testResults.p", "w"))
+        generateNetworks(edges[ind], doc2tag, cat2tag, ind)
+
+
+
 
     print 'done!'
 

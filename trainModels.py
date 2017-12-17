@@ -74,19 +74,19 @@ def trainCatModels(docs):
                 # # PV-DM w/ average
                 # Doc2Vec(dm=1, dm_mean=1, size=5, window=10, hs=0, min_count=1, iter=10, workers=cores),
 
-                Doc2Vec(dm=1, dm_concat=1, size=5,  negative=5, hs=0, min_count=1, window=5, iter=10, workers=cores, ),
-                Doc2Vec(dm=0, size=5,  negative=5, hs=0, min_count=1, window=5, iter=10, workers=cores, ),
-                Doc2Vec(dm=1, dm_mean=1, size=5,  negative=5, hs=0, min_count=1, window=5, iter=10, workers=cores, ),
+                Doc2Vec(dm=1, dm_concat=1, size=5,  negative=5, hs=0, min_count=1, window=10, iter=100, workers=cores, ),
+                Doc2Vec(dm=0, size=5,  negative=5, hs=0, min_count=1, window=5, iter=100, workers=cores, ),
+                Doc2Vec(dm=1, dm_mean=1, size=5,  negative=5, hs=0, min_count=1, window=5, iter=100, workers=cores, ),
                 ]
         else:
             # define models
             simple_models = [
                 # PV-DM w/ concatenation - window=5 (both sides) approximates paper's 10-word total window size
-                Doc2Vec(dm=1, dm_concat=1, size=100, window=10, hs=0, min_count=2, iter=10, workers=cores, ),
+                Doc2Vec(dm=1, dm_concat=1, size=30, window=20, negative=5, hs=0, min_count=2, iter=100, workers=cores, ),
                 # PV-DBOW 
-                Doc2Vec(dm=0, size=100, hs=0, min_count=2, iter=10, workers=cores, ),
+                Doc2Vec(dm=0, size=30, negative=5,  window=5, hs=0, min_count=2, iter=100, workers=cores, ),
                 # PV-DM w/ average
-                Doc2Vec(dm=1, dm_mean=1, size=100, window=10, negative=5, hs=0, min_count=2, iter=10, workers=cores, ),
+                Doc2Vec(dm=1, dm_mean=1, size=30, window=5, negative=5, hs=0, min_count=2, iter=100, workers=cores, ),
                 ]
 
         # simple_models[0] = Doc2Vec.load('doc2vec_title_VOCAB.model')
