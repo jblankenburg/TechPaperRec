@@ -1,4 +1,3 @@
-
 network: allCategories
 	recs: 170900930, CV
 	recs: 170807878, CV
@@ -402,33 +401,6 @@ Counter({'automata': ['170900777', '171008748'], 'CV': ['170807933'], 'Robotics'
 papers in titleAbstract network:
 
 Counter({'CV': ['171200516', '171011252'], 'SoftwareEngineering': ['171110964', '171108078', '171111521'], 'compilers': ['171101845', '171007309', '170907092'], 'networking': ['170909708', '171006454'], 'automata': ['170902102'], 'graphics': ['170708390', '170501263'], 'Robotics': ['170301040', '14096226'], 'ML': ['160601990', '160509221', '171109091'], 'Security': ['13103723'], 'Parallel': ['11052447', '11034204']})
-['CV', 'automata', 'CV', 'automata', 'networking', 'Parallel', 'SoftwareEngineering', 'compilers', 'graphics', 'graphics', 'ML', 'ML', 'compilers', 'graphics', 'ML', 'Parallel', 'automata', 'SoftwareEngineering', 'Security', 'Parallel', 'Robotics', 'Security', 'networking', 'Robotics', 'Security', 'compilers', 'CV', 'SoftwareEngineering', 'Robotics', 'networking']
-['CV', 'compilers', 'graphics', 'automata', 'ML', 'Robotics', 'Parallel', 'Robotics', 'CV', 'N/A', 'N/A', 'Robotics', 'Parallel', 'graphics', 'N/A', 'N/A', 'automata', 'Parallel', 'Security', 'Parallel', 'ML', 'Security', 'graphics', 'Robotics', 'Parallel', 'automata', 'Robotics', 'Robotics', 'graphics', 'networking']
-[[2 1 0 0 0 0 0 0 0 0 0]
- [1 0 0 0 0 0 1 1 0 0 0]
- [0 0 1 1 0 0 0 1 0 0 0]
- [0 0 1 1 0 0 0 0 0 0 1]
- [0 0 0 0 0 0 0 1 0 0 2]
- [0 0 0 1 1 1 0 0 0 0 0]
- [0 0 0 0 0 0 1 1 0 0 1]
- [0 0 0 1 1 0 0 1 0 0 0]
- [0 0 0 0 0 0 1 0 2 0 0]
- [0 0 0 0 0 0 2 1 0 0 0]
- [0 0 0 0 0 0 0 0 0 0 0]]
-['CV', 'automata', 'CV', 'automata', 'networking', 'Parallel', 'SoftwareEngineering', 'compilers', 'graphics', 'graphics', 'ML', 'ML', 'compilers', 'graphics', 'ML', 'Parallel', 'automata', 'SoftwareEngineering', 'Security', 'Parallel', 'Robotics', 'Security', 'networking', 'Robotics', 'Security', 'compilers', 'CV', 'SoftwareEngineering', 'Robotics', 'networking']
-['CV', 'graphics', 'ML', 'automata', 'automata', 'Robotics', 'automata', 'SoftwareEngineering', 'graphics', 'graphics', 'ML', 'Robotics', 'automata', 'graphics', 'graphics', 'compilers', 'automata', 'Parallel', 'Security', 'SoftwareEngineering', 'Robotics', 'ML', 'compilers', 'Robotics', 'Security', 'compilers', 'Robotics', 'compilers', 'graphics', 'networking']
-[[2 0 0 1 0 0 0 0 0 0 0]
- [1 1 0 0 0 0 0 0 0 1 0]
- [0 0 1 0 1 0 0 1 0 0 0]
- [0 0 0 3 0 0 0 0 0 0 0]
- [0 0 0 1 1 0 0 1 0 0 0]
- [1 1 0 0 0 1 0 0 0 0 0]
- [0 1 0 0 0 0 0 1 0 1 0]
- [0 0 0 1 0 0 0 2 0 0 0]
- [0 0 0 0 1 0 0 0 2 0 0]
- [1 1 0 0 0 0 1 0 0 0 0]
- [0 0 0 0 0 0 0 0 0 0 0]]
-test amounts: each topic has three.
 Confusion matrix, without normalization
 [[2 0 0 1 0 0 0 0 0 0 0]
  [1 1 0 0 0 0 0 0 0 1 0]
@@ -453,4 +425,38 @@ Confusion matrix, without normalization
  [0 0 0 0 0 0 1 0 2 0 0]
  [0 0 0 0 0 0 2 1 0 0 0]
  [0 0 0 0 0 0 0 0 0 0 0]]
-done!
+
+RESULTS FOR ALL RECOMMENDATIONS:
+
+papers in allCategories network:
+Counter({'compilers': ['171101845'], 'automata': ['170900777', '171008748'], 'CV': ['170807933', '170807933', '170807933', '171011252', '171011252'], 'Robotics': ['170601127'], 'graphics': ['170502999', '170502999'], 'Security': ['150507487', '150507487', '150507487', '150507487', '150507548', '150507548'], 'Parallel': ['150308294'], 'networking': ['08091330', '08091330', '08091330', '08091330'], 'SoftwareEngineering': [], 'ML': []})
+papers in titleAbstract network:
+Counter({'SoftwareEngineering': ['171110964', '171108078', '171111521'], 'compilers': ['171101845', '171101845', '171101845', '171101845', '171007309', '170907092', '170907092', '170907092', '170907092', '170907092'], 'networking': ['170909708', '171006454', '171006454', '171006454', '171006454', '171006454', '08091330'], 'automata': ['170902102', '170902102', '170902102', '170902102', '170902102', '170900777', '170900777', '170900777', '170900777', '171008748', '171008748', '171008748', '171008748'], 'CV': ['170807933', '170807933', '171200516', '171200516', '171200516', '171200516', '171200516', '171011252', '171011252', '171011252'], 'graphics': ['170708390', '170708390', '170708390', '170708390', '170708390', '170502999', '170502999', '170502999'], 'Robotics': ['170301040', '14096226', '14096226', '14096226', '14096226', '14096226'], 'ML': ['160509221'], 'Security': ['150507487', '150507548', '150507548', '150507548', '13103723'], 'Parallel': ['11052447', '11052447', '11052447', '11052447', '11052447']})
+Confusion matrix, without normalization
+[[ 7  0  2  4  1  0  0  0  0  1  0]
+ [ 3  2  0  6  1  0  0  0  0  3  0]
+ [ 0  0  4  3  2  0  0  2  0  0  0]
+ [ 0  1  1 10  2  0  0  1  0  0  0]
+ [ 0  0  4  6  3  0  0  2  0  0  0]
+ [ 2  1  0  2  0  2  1  0  2  1  0]
+ [ 0  1  0  0  1  1  1  1  0  2  0]
+ [ 0  0  1  4  3  0  1  5  0  1  0]
+ [ 0  0  0  2  1  0  1  0  4  1  0]
+ [ 1  2  0  3  2  0  3  0  0  0  0]
+ [ 0  0  0  0  0  0  0  0  0  0  0]]
+Confusion matrix, without normalization
+[[2 4 0 5 0 0 0 4 0 0 0]
+ [3 1 0 2 0 0 1 1 0 3 0]
+ [1 0 5 4 2 0 0 3 0 0 0]
+ [0 3 4 2 1 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 1 0 0 0]
+ [1 0 2 1 2 4 0 1 0 0 0]
+ [0 1 0 0 2 0 1 1 1 0 0]
+ [0 1 0 3 1 0 0 1 0 1 0]
+ [0 2 0 0 0 0 1 0 6 2 0]
+ [0 0 0 0 0 0 2 1 0 0 0]
+ [0 0 0 0 0 0 0 0 0 0 0]]
+AllCats recommended [ 7 12 11 17  8  4  5 13  7  6  0] papers total
+TA recommended [ 7 12 11 17  8  4  5 13  7  6  0] papers total
+Papers with a given number of recommendations returned:
+Counter({5: 16, 1: 10, 0: 4})
