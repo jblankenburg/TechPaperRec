@@ -82,7 +82,7 @@ def trainCatModels(docs):
             # define models
             simple_models = [
                 # PV-DM w/ concatenation - window=5 (both sides) approximates paper's 10-word total window size
-                Doc2Vec(dm=1, dm_concat=1, size=30, window=20, negative=5, hs=0, min_count=2, iter=100, workers=cores, ),
+                Doc2Vec(dm=1, dm_concat=1, size=20, window=5, negative=5, hs=0, min_count=2, iter=100, workers=cores, ),
                 # PV-DBOW 
                 Doc2Vec(dm=0, size=30, negative=5,  window=5, hs=0, min_count=2, iter=100, workers=cores, ),
                 # PV-DM w/ average

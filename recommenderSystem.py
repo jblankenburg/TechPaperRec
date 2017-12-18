@@ -1,5 +1,6 @@
 # recomender system!!!
 
+import itertools
 import re
 import gensim
 from gensim.models import Doc2Vec
@@ -17,6 +18,8 @@ from IPython.display import HTML
 import copy
 import sys
 from scipy import spatial
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
 
 # os.system("taskset -p 0xff %d" % os.getpid())
 
@@ -234,6 +237,45 @@ def reorgCat2Tag(cat2tag):
 # --------------------------------------------------------------
 
 
+def plot_confusion_matrix(cm, classes,
+                          normalize=False,
+                          title='Confusion matrix',
+                          cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    print(cm)
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+
+
+
+# --------------------------------------------------------------
+
+
 # --------------------------------------------------------------
 #  main
 # --------------------------------------------------------------
@@ -296,18 +338,78 @@ def main():
                 # print 'input: {} network {}:\n\t{}'.format(indx,network,top)
                 res.append((indx,network,top))
 
+                # print 'network: {}\n\trecs: {}'.format(network, top)
+    print '\n'
+
+    # # save the data?
+    # fname = "recommended_" + dataset + ".p"
+    # pickle.dump(res, open(fname, "w"))
+
+    fname = "recommended_" + dataset + ".p"
+    res = pickle.load(open(fname, "r"))
+    for item in res:
+        print 'network: {}'.format(item[1])
+        count = 0
+        for paper in item[2]:
+            print '\trecs: {}, {}'.format(doc2tagTrain[paper[1]], tag2catTrain[item[2][count][1]])
+            count +=1
+        print '\n'
+
+    # save the results?
+    print '\nRESULTS FOR TOP RECOMMENDATION:\n'
+    resTA_tr = {'automata': [], 'compilers': [], 'CV': [], 'graphics': [], 'ML': [], 'networking': [], 'Parallel': [], 'Robotics': [], 'Security': [], 'SoftwareEngineering': []}
+    resAll_tr = {'automata': [], 'compilers': [], 'CV': [], 'graphics': [], 'ML': [], 'networking': [], 'Parallel': [], 'Robotics': [], 'Security': [], 'SoftwareEngineering': []}
+    resTA_fa = {'automata': [], 'compilers': [], 'CV': [], 'graphics': [], 'ML': [], 'networking': [], 'Parallel': [], 'Robotics': [], 'Security': [], 'SoftwareEngineering': []}
+    resAll_fa = {'automata': [], 'compilers': [], 'CV': [], 'graphics': [], 'ML': [], 'networking': [], 'Parallel': [], 'Robotics': [], 'Security': [], 'SoftwareEngineering': []}
+    resCounts = {'allCategories': (resAll_tr,resAll_fa), 'titleAbstract': (resTA_tr, resTA_fa)}
+    y_trueTA = []
+    y_predTA = []
+    y_trueAll = []
+    y_predAll = []
+    labels = ['automata', 'compilers', 'CV', 'graphics', 'ML', 'networking', 'Parallel', 'Robotics', 'Security', 'SoftwareEngineering', 'N/A']
 
     for item in res:
 
-        print item
-
         # print 'input: {} network {}:\n\t{}'.format(item[0],item[1],item[2])
-        print 'docid: {} topic: {}\n\tnetwork {}'.format(doc2tag[item[0]], tag2cat[item[0]], item[1])
+        # print 'docid: {} topic: {}\n\tnetwork {}'.format(doc2tag[item[0]], tag2cat[item[0]], item[1])
+        # if item[2] == []
+            # print 'NO CLOSEST PAPERS FOUND, AS CLOSEST PAPER HAD NO EDGES!'
+        # else:
+         # print '\t\ttop id:{} sim: {} topic: {}'.format(item[2][0][1], item[2][0][0], tag2catTrain[item[2][0][1]])
+        # print '\n'
+
+        # save if correct label
         if item[2] == []:
-            print 'NO CLOSEST PAPERS FOUND, AS CLOSEST PAPER HAD NO EDGES!'
+            resCounts[item[1]][1][tag2cat[item[0]]].append(doc2tag[item[0]])
+
+            if item[1] == 'allCategories':
+                y_predAll.append('N/A')
+                y_trueAll.append(tag2cat[item[0]])
+            else:
+                y_predTA.append('N/A')
+                y_trueTA.append(tag2cat[item[0]])
+
+        elif tag2cat[item[0]] == tag2catTrain[item[2][0][1]]:
+            resCounts[item[1]][0][tag2cat[item[0]]].append(doc2tag[item[0]])
+            
+            if item[1] == 'allCategories':
+                y_predAll.append(tag2catTrain[item[2][0][1]])
+                y_trueAll.append(tag2cat[item[0]])
+            else:
+                y_predTA.append(tag2catTrain[item[2][0][1]])
+                y_trueTA.append(tag2cat[item[0]])
+                
+        # save if incorrect label
         else:
-         print '\t\ttop id:{} sim: {} topic: {}'.format(item[2][0][1], item[2][0][0], tag2catTrain[item[2][0][1]])
-        print '\n'
+            resCounts[item[1]][1][tag2cat[item[0]]].append(doc2tag[item[0]])
+
+
+            if item[1] == 'allCategories':
+                y_predAll.append(tag2catTrain[item[2][0][1]])
+                y_trueAll.append(tag2cat[item[0]])
+            else:
+                y_predTA.append(tag2catTrain[item[2][0][1]])
+                y_trueTA.append(tag2cat[item[0]])
 
         # print 'docid: {}' .format(doc2tag[item[0]])
         # print 'topic: {}\n'.format( tag2cat[item[0]])
@@ -316,9 +418,48 @@ def main():
         # print '\t\ttop id:{}'.format(item[2][0][1])
         # print 'sim: {}'.format( item[2][0][0])
         # print 'topic: {}'.format(tag2catTest[item[2][0][1]])
+    print 'papers in allCategories network:\n'
+    print(collections.Counter(resCounts[item[1]][0]))
+    print 'papers in titleAbstract network:\n'
+    print(collections.Counter(resCounts[item[1]][1]))
+
+    # define confusion matrix?
+    # for topic in resCounts[item[1]][0]:
+    #     for docid in resCounts[item[1]][0][]
+    # y_true = [topic for topic ]
+    # y_pred = 
+
+    print y_trueTA
+    print y_predTA
+    ta = confusion_matrix(y_trueTA, y_predTA, labels)
+    print ta
+    print y_trueAll
+    print y_predAll
+    allcats = confusion_matrix(y_trueAll, y_predAll, labels)
+    print allcats
+    # print "test amounts:\n\tautomata: 2    compilers: 4    CV: 3    graphics: 1    ML:4    networking: 3    Parallel: 5    Robotics: 3    Security: 2    Software Engineering: 3"
+    print "test amounts: each topic has three."
 
 
+    # print 'Correctly Labelled: {}\n\tdocis: {}\n'.format(,res[item[0]][0])
+    # print 'Wrongly Labelled:   {}\n\tdocids: {}\n\n'.format(res[item[0]][0])
 
+
+    # plot confusions with matplotlib
+    plt.figure()
+    plot_confusion_matrix(allcats, labels,
+                          normalize=False,
+                          title='Top Recommendation - AllCategories Network - Confusion matrix',
+                          cmap=plt.cm.Blues)
+
+    # plot confusions with matplotlib
+    plt.figure()
+    plot_confusion_matrix(ta, labels,
+                          normalize=False,
+                          title='Top Recommendation - TitleAbstract Network - Confusion matrix',
+                          cmap=plt.cm.Blues)
+
+    plt.show()
     print 'done!'
 
 

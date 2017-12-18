@@ -1,0 +1,456 @@
+
+network: allCategories
+	recs: 170900930, CV
+	recs: 170807878, CV
+	recs: 171100499, CV
+	recs: 171111585, ML
+	recs: 14067025, graphics
+
+
+network: titleAbstract
+	recs: 170807878, CV
+	recs: 170603024, graphics
+	recs: 171105858, graphics
+	recs: 150601732, CV
+	recs: 171111575, CV
+
+
+network: allCategories
+	recs: 170708360, graphics
+	recs: 171107793, graphics
+	recs: 170505035, ML
+	recs: 170902098, automata
+	recs: 150601732, CV
+
+
+network: titleAbstract
+	recs: 170701271, compilers
+	recs: 170702920, Robotics
+	recs: 170502730, compilers
+	recs: 171107793, graphics
+	recs: 170309264, compilers
+
+
+network: allCategories
+	recs: 171111585, ML
+	recs: 170702920, Robotics
+	recs: 170506086, graphics
+	recs: 170900930, CV
+	recs: 151104224, graphics
+
+
+network: titleAbstract
+	recs: 170506086, graphics
+	recs: 171107793, graphics
+	recs: 170302279, Robotics
+	recs: 170302340, Robotics
+	recs: 170904380, automata
+
+
+network: allCategories
+	recs: 170902098, automata
+	recs: 170708360, graphics
+	recs: 151104224, graphics
+	recs: 171007528, automata
+	recs: 170310361, SoftwareEngineering
+
+
+network: titleAbstract
+	recs: 170904380, automata
+	recs: 170708360, graphics
+	recs: 14067025, graphics
+	recs: 170506086, graphics
+	recs: 170301423, Robotics
+
+
+network: allCategories
+	recs: 170902098, automata
+	recs: 170708360, graphics
+	recs: 170310361, SoftwareEngineering
+	recs: 171007528, automata
+	recs: 151104224, graphics
+
+
+network: titleAbstract
+	recs: 170505035, ML
+
+
+network: allCategories
+	recs: 170702920, Robotics
+	recs: 08092152, networking
+	recs: 150401365, Parallel
+	recs: 171200865, SoftwareEngineering
+	recs: 171111585, ML
+
+
+network: titleAbstract
+	recs: 170702920, Robotics
+	recs: 170309264, compilers
+	recs: 171107676, ML
+	recs: 170908025, Security
+	recs: 171111585, ML
+
+
+network: allCategories
+	recs: 170902098, automata
+	recs: 14067025, graphics
+	recs: 170403105, compilers
+	recs: 170708360, graphics
+	recs: 150504694, Parallel
+
+
+network: titleAbstract
+	recs: 150504694, Parallel
+
+
+network: allCategories
+	recs: 170305375, SoftwareEngineering
+	recs: 14067025, graphics
+	recs: 171008647, automata
+	recs: 171111585, ML
+	recs: 171107793, graphics
+
+
+network: titleAbstract
+	recs: 170301423, Robotics
+	recs: 170904380, automata
+	recs: 170701271, compilers
+	recs: 171107793, graphics
+	recs: 14067025, graphics
+
+
+network: allCategories
+	recs: 170708360, graphics
+	recs: 14067025, graphics
+	recs: 170702920, Robotics
+	recs: 171111585, ML
+	recs: 170506086, graphics
+
+
+network: titleAbstract
+	recs: 170501921, CV
+	recs: 171111585, ML
+	recs: 171111575, CV
+	recs: 160407457, CV
+	recs: 171111577, CV
+
+
+network: allCategories
+	recs: 170708360, graphics
+	recs: 14067025, graphics
+	recs: 171107793, graphics
+	recs: 150601732, CV
+	recs: 170403105, compilers
+
+
+network: titleAbstract
+
+
+network: allCategories
+	recs: 170505035, ML
+	recs: 14067025, graphics
+	recs: 171111585, ML
+	recs: 171105858, graphics
+	recs: 171107793, graphics
+
+
+network: titleAbstract
+
+
+network: allCategories
+	recs: 170702920, Robotics
+	recs: 171111585, ML
+	recs: 171100499, CV
+	recs: 170302326, Robotics
+	recs: 170900930, CV
+
+
+network: titleAbstract
+	recs: 170302326, Robotics
+
+
+network: allCategories
+	recs: 170902098, automata
+	recs: 170708360, graphics
+	recs: 171007528, automata
+	recs: 170310361, SoftwareEngineering
+	recs: 151104224, graphics
+
+
+network: titleAbstract
+	recs: 150504694, Parallel
+
+
+network: allCategories
+	recs: 14067025, graphics
+	recs: 171111585, ML
+	recs: 171105858, graphics
+	recs: 170601208, graphics
+	recs: 171107793, graphics
+
+
+network: titleAbstract
+	recs: 14067025, graphics
+	recs: 170502730, compilers
+	recs: 170309264, compilers
+	recs: 170701271, compilers
+	recs: 170708360, graphics
+
+
+network: allCategories
+	recs: 170708360, graphics
+	recs: 171111575, CV
+	recs: 150601732, CV
+	recs: 14067025, graphics
+	recs: 171107793, graphics
+
+
+network: titleAbstract
+
+
+network: allCategories
+	recs: 171103016, compilers
+
+
+network: titleAbstract
+
+
+network: allCategories
+	recs: 171008647, automata
+	recs: 171007528, automata
+	recs: 170902098, automata
+	recs: 170904380, automata
+	recs: 171111575, CV
+
+
+network: titleAbstract
+	recs: 170904380, automata
+	recs: 170302279, Robotics
+	recs: 170708360, graphics
+	recs: 170701271, compilers
+	recs: 170301423, Robotics
+
+
+network: allCategories
+	recs: 150504694, Parallel
+	recs: 170505035, ML
+	recs: 150504956, Parallel
+	recs: 171109874, ML
+	recs: 171107793, graphics
+
+
+network: titleAbstract
+	recs: 150504694, Parallel
+
+
+network: allCategories
+	recs: 170701871, Security
+	recs: 161101907, Security
+
+
+network: titleAbstract
+	recs: 170701871, Security
+	recs: 161208678, Security
+	recs: 161101907, Security
+	recs: 150507370, Security
+	recs: 171200061, SoftwareEngineering
+
+
+network: allCategories
+	recs: 171200061, SoftwareEngineering
+
+
+network: titleAbstract
+	recs: 150504694, Parallel
+
+
+network: allCategories
+	recs: 170702920, Robotics
+	recs: 171111585, ML
+	recs: 171105858, graphics
+	recs: 170302326, Robotics
+	recs: 171111139, ML
+
+
+network: titleAbstract
+	recs: 170505035, ML
+
+
+network: allCategories
+	recs: 170505035, ML
+	recs: 151104224, graphics
+	recs: 170601208, graphics
+	recs: 171201207, SoftwareEngineering
+	recs: 150504694, Parallel
+
+
+network: titleAbstract
+	recs: 170906223, Security
+	recs: 150507929, Security
+	recs: 171111396, compilers
+	recs: 171008332, compilers
+	recs: 171200676, SoftwareEngineering
+
+
+network: allCategories
+	recs: 171111396, compilers
+
+
+network: titleAbstract
+	recs: 171107793, graphics
+	recs: 170904380, automata
+	recs: 160407457, CV
+	recs: 170302340, Robotics
+	recs: 150601732, CV
+
+
+network: allCategories
+	recs: 170302326, Robotics
+	recs: 170702920, Robotics
+	recs: 150504694, Parallel
+	recs: 171107676, ML
+	recs: 171100499, CV
+
+
+network: titleAbstract
+	recs: 170302326, Robotics
+
+
+network: allCategories
+	recs: 170701871, Security
+	recs: 161101907, Security
+
+
+network: titleAbstract
+	recs: 150504694, Parallel
+
+
+network: allCategories
+	recs: 170502730, compilers
+	recs: 170403105, compilers
+	recs: 171201207, SoftwareEngineering
+	recs: 14067025, graphics
+	recs: 170708360, graphics
+
+
+network: titleAbstract
+	recs: 171004115, automata
+	recs: 170902098, automata
+	recs: 170305375, SoftwareEngineering
+	recs: 171201177, SoftwareEngineering
+	recs: 170310361, SoftwareEngineering
+
+
+network: allCategories
+	recs: 170910489, Robotics
+
+
+network: titleAbstract
+	recs: 170910489, Robotics
+	recs: 170904905, ML
+	recs: 171109874, ML
+	recs: 170900930, CV
+	recs: 171100499, CV
+
+
+network: allCategories
+	recs: 171103016, compilers
+
+
+network: titleAbstract
+	recs: 170302326, Robotics
+
+
+network: allCategories
+	recs: 14067025, graphics
+	recs: 170708360, graphics
+	recs: 171201207, SoftwareEngineering
+	recs: 171107793, graphics
+	recs: 170302326, Robotics
+
+
+network: titleAbstract
+	recs: 14067025, graphics
+	recs: 171201207, SoftwareEngineering
+	recs: 170708360, graphics
+	recs: 171107793, graphics
+	recs: 170403105, compilers
+
+
+network: allCategories
+	recs: 08091344, networking
+	recs: 08091681, networking
+	recs: 150504694, Parallel
+	recs: 150507929, Security
+	recs: 170701871, Security
+
+
+network: titleAbstract
+	recs: 161208263, networking
+	recs: 08091344, networking
+	recs: 08092152, networking
+	recs: 171111139, ML
+	recs: 08094019, networking
+
+
+
+RESULTS FOR TOP RECOMMENDATION:
+
+papers in allCategories network:
+
+Counter({'automata': ['170900777', '171008748'], 'CV': ['170807933'], 'Robotics': ['170601127'], 'graphics': ['170502999'], 'Security': ['150507487', '150507548'], 'Parallel': ['150308294'], 'networking': ['08091330'], 'SoftwareEngineering': [], 'ML': [], 'compilers': []})
+papers in titleAbstract network:
+
+Counter({'CV': ['171200516', '171011252'], 'SoftwareEngineering': ['171110964', '171108078', '171111521'], 'compilers': ['171101845', '171007309', '170907092'], 'networking': ['170909708', '171006454'], 'automata': ['170902102'], 'graphics': ['170708390', '170501263'], 'Robotics': ['170301040', '14096226'], 'ML': ['160601990', '160509221', '171109091'], 'Security': ['13103723'], 'Parallel': ['11052447', '11034204']})
+['CV', 'automata', 'CV', 'automata', 'networking', 'Parallel', 'SoftwareEngineering', 'compilers', 'graphics', 'graphics', 'ML', 'ML', 'compilers', 'graphics', 'ML', 'Parallel', 'automata', 'SoftwareEngineering', 'Security', 'Parallel', 'Robotics', 'Security', 'networking', 'Robotics', 'Security', 'compilers', 'CV', 'SoftwareEngineering', 'Robotics', 'networking']
+['CV', 'compilers', 'graphics', 'automata', 'ML', 'Robotics', 'Parallel', 'Robotics', 'CV', 'N/A', 'N/A', 'Robotics', 'Parallel', 'graphics', 'N/A', 'N/A', 'automata', 'Parallel', 'Security', 'Parallel', 'ML', 'Security', 'graphics', 'Robotics', 'Parallel', 'automata', 'Robotics', 'Robotics', 'graphics', 'networking']
+[[2 1 0 0 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 1 1 0 0 0]
+ [0 0 1 1 0 0 0 1 0 0 0]
+ [0 0 1 1 0 0 0 0 0 0 1]
+ [0 0 0 0 0 0 0 1 0 0 2]
+ [0 0 0 1 1 1 0 0 0 0 0]
+ [0 0 0 0 0 0 1 1 0 0 1]
+ [0 0 0 1 1 0 0 1 0 0 0]
+ [0 0 0 0 0 0 1 0 2 0 0]
+ [0 0 0 0 0 0 2 1 0 0 0]
+ [0 0 0 0 0 0 0 0 0 0 0]]
+['CV', 'automata', 'CV', 'automata', 'networking', 'Parallel', 'SoftwareEngineering', 'compilers', 'graphics', 'graphics', 'ML', 'ML', 'compilers', 'graphics', 'ML', 'Parallel', 'automata', 'SoftwareEngineering', 'Security', 'Parallel', 'Robotics', 'Security', 'networking', 'Robotics', 'Security', 'compilers', 'CV', 'SoftwareEngineering', 'Robotics', 'networking']
+['CV', 'graphics', 'ML', 'automata', 'automata', 'Robotics', 'automata', 'SoftwareEngineering', 'graphics', 'graphics', 'ML', 'Robotics', 'automata', 'graphics', 'graphics', 'compilers', 'automata', 'Parallel', 'Security', 'SoftwareEngineering', 'Robotics', 'ML', 'compilers', 'Robotics', 'Security', 'compilers', 'Robotics', 'compilers', 'graphics', 'networking']
+[[2 0 0 1 0 0 0 0 0 0 0]
+ [1 1 0 0 0 0 0 0 0 1 0]
+ [0 0 1 0 1 0 0 1 0 0 0]
+ [0 0 0 3 0 0 0 0 0 0 0]
+ [0 0 0 1 1 0 0 1 0 0 0]
+ [1 1 0 0 0 1 0 0 0 0 0]
+ [0 1 0 0 0 0 0 1 0 1 0]
+ [0 0 0 1 0 0 0 2 0 0 0]
+ [0 0 0 0 1 0 0 0 2 0 0]
+ [1 1 0 0 0 0 1 0 0 0 0]
+ [0 0 0 0 0 0 0 0 0 0 0]]
+test amounts: each topic has three.
+Confusion matrix, without normalization
+[[2 0 0 1 0 0 0 0 0 0 0]
+ [1 1 0 0 0 0 0 0 0 1 0]
+ [0 0 1 0 1 0 0 1 0 0 0]
+ [0 0 0 3 0 0 0 0 0 0 0]
+ [0 0 0 1 1 0 0 1 0 0 0]
+ [1 1 0 0 0 1 0 0 0 0 0]
+ [0 1 0 0 0 0 0 1 0 1 0]
+ [0 0 0 1 0 0 0 2 0 0 0]
+ [0 0 0 0 1 0 0 0 2 0 0]
+ [1 1 0 0 0 0 1 0 0 0 0]
+ [0 0 0 0 0 0 0 0 0 0 0]]
+Confusion matrix, without normalization
+[[2 1 0 0 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 1 1 0 0 0]
+ [0 0 1 1 0 0 0 1 0 0 0]
+ [0 0 1 1 0 0 0 0 0 0 1]
+ [0 0 0 0 0 0 0 1 0 0 2]
+ [0 0 0 1 1 1 0 0 0 0 0]
+ [0 0 0 0 0 0 1 1 0 0 1]
+ [0 0 0 1 1 0 0 1 0 0 0]
+ [0 0 0 0 0 0 1 0 2 0 0]
+ [0 0 0 0 0 0 2 1 0 0 0]
+ [0 0 0 0 0 0 0 0 0 0 0]]
+done!
